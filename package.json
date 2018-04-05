@@ -4,7 +4,7 @@
   "description": "Used to test differences between Geth versions",
   "main": "sanity.js",
   "scripts": {
-    "run" : "node index.js",
+    "start" : "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Eric Tu <eric.tu@consensys.net>",
