@@ -10,3 +10,5 @@ function start(){
     test.loadTest({method: 'eth_blockNumber'});
     test.executeTests();
 }
+
+start();
