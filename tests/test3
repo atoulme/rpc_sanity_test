@@ -1,0 +1,7 @@
+{  
+   "tests":[  
+      {  
+         "method":"eth_blockNumber"
+      }
+   ]
+}

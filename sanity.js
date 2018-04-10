@@ -5,18 +5,21 @@ const colors = require('colors');
 
 class RPCSanityTest{
     
-    constructor (urlOld, urlNew){
-        this.ethOld = new EthRPC(new HttpProvider(urlOld));
-        this.ethNew = new EthRPC(new HttpProvider(urlNew));
+    constructor (endpoints, options){
+        this.endpoints = endpoints;
+        this.options = options;
+        this.listOfProviders = endpoints.map((endpoint) =>{
+            return new EthRPC(new HttpProvider(endpoint));
+        })
         this.listOfTests = [];
     }
     
-    doubleQuery (options) {
-        return new Promise(async (resolve, reject) => {
-            let oldResult = await this.ethOld.sendAsync(options);
-            let newResult = await this.ethNew.sendAsync(options);
-            resolve({oldResult: oldResult, newResult: newResult});
-        })
+    //returns a list of promises
+    naryQuery (listOfProviders, options) {
+        let promises = listOfProviders.map((rpc) => {
+            return rpc.sendAsync(options);
+        });
+        return promises;
     }
     
     isEqual (a, b){
@@ -28,6 +31,7 @@ class RPCSanityTest{
     }
 
     async executeTests(){
+        console.log();
         console.log('STARTING TO EXECUTE TESTS')
         for (let i = 0 ; i < this.listOfTests.length ; i++){
             console.log(colors.rainbow('Starting Test ' + i + ": " + this.listOfTests[i].method));
@@ -36,12 +40,31 @@ class RPCSanityTest{
     }
 
     async testMethod (options) {
-        let result = await this.doubleQuery(options);
-        let match  = this.isEqual(result.oldResult, result.newResult);
+        let results = this.naryQuery(this.listOfProviders, options);
+        for (let i = 0 ; i < results.length ; i++) {
+            try{
+                results[i] = await results[i];
+            } catch (error){
+                console.log(colors.red('Error at endpoint: ' + this.endpoints[i] + ' with error message: '));
+                console.log(error);
+                console.log(colors.red('Test Case Failed'));
+                return;
+            }
+        }
+
+        let match  = this.isEqual(results[0], results[3]);
         if (match){
             console.log(colors.green('Test Case Pass'));
+            if (this.options.verbose) {
+                for ( let i = 0 ; i < results.length ; i ++){
+                    console.log(this.endpoints[i] + ": " + results[i]);
+                }
+            }
         } else {
             console.log(colors.red('Test Case Failed'));
+            for ( let i = 0 ; i < results.length ; i ++){
+                console.log(this.endpoints[i], ": ", results[i]);
+            }
         }
     }
 }
