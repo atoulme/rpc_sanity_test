@@ -51,21 +51,23 @@ class RPCSanityTest{
                 return;
             }
         }
-
-        let match  = this.isEqual(results[0], results[3]);
-        if (match){
-            console.log(colors.green('Test Case Pass'));
-            if (this.options.verbose) {
-                for ( let i = 0 ; i < results.length ; i ++){
-                    console.log(this.endpoints[i] + ": " + results[i]);
+        for(let i = 1 ; i < results.length ; i++){
+            let match = this.isEqual(results[0], results[i]);
+            if(!match){
+                console.log(colors.red('Test Case Failed'));
+                for ( let j = 0 ; j < results.length ; j ++){
+                    console.log(this.endpoints[j], ": ", results[j]);
                 }
-            }
-        } else {
-            console.log(colors.red('Test Case Failed'));
-            for ( let i = 0 ; i < results.length ; i ++){
-                console.log(this.endpoints[i], ": ", results[i]);
+                return;
             }
         }
+        console.log(colors.green('Test Case Pass'));
+        if (this.options.verbose) {
+            for ( let i = 0 ; i < results.length ; i ++){
+                console.log(this.endpoints[i] + ": " + results[i]);
+            }
+        }
+
     }
 }
 
