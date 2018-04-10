@@ -8,18 +8,26 @@ To run this, the repo should first be cloned. Enter into the directory and run t
 
 ```
 npm install
-npm start
 ```
 
-This will install all the dependancies and will run the tests. 
+This will install all the dependancies. 
+
+## Creating tests
+
+Make a new folder and a new file within it. The structure of the testfile should look a little something like:
+
+```json
+{
+    "tests": [
+        {...},
+        {...},
+        {...},
+    ]
+}
+```
+
+`{…}` is where the post body goes. There are examples in the `tests` folder. 
 
 ## Pointing to Different RPC Endpoints
 
-To compare between 2 endpoints, change `const test = new RPCSanityTest('https://ropsten.infura.io', 'https://ropsten.infura.io');` to the endpoint you want.
-
-## Adding Tests
-
-To add more test cases, edit the `start` routine in `index.js`. 
-
-For example to add another test case to test `eth_getLogs`, add `    test.loadTest({method: 'eth_getLogs', params: [{from: 1700000, to: 1700005}]});`. This will add that test to the queue.
-
+To compare between n number of endpoints, run `node index.js https://endpoint1.blah https://endpoint2.blah ... https://endpointn.blah -d <test directory>`
