@@ -63,13 +63,9 @@ class RPCSanityTest{
             }
         }
         if (options.result){
-            console.log("Comp")
             if(!this.isEqual(options.result, results[0])){
-                console.log("FUCK")
-                console.log(typeof(options.result))
-                console.log(typeof(results[0]))
-                fs.writeFileSync("1.json", JSON.stringify(options.result))
-                fs.writeFileSync("2.json", JSON.stringify(results[0]))
+                console.log(colors.red('Test Case Failed'));
+                console.log(colors.red("RPC compares are correct, but different from preloaded result"))
             }
         }
         console.log(colors.green('Test Case Pass'));
