@@ -1,0 +1,15 @@
+{
+    "tests": [
+        {
+            "payload": {
+                "method": "eth_getLogs",
+                "params": [
+                    {
+                        "from": 1700000,
+                        "to": 1700005
+                    }
+                ]
+            }
+        }
+    ]
+}

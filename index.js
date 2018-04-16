@@ -6,6 +6,9 @@ const fs = require('fs');
 var argv = require('yargs')
     .usage('Usage: $0 [options] endpoints1 ... endpointsn')
     .demandCommand(2)
+    .boolean('i')
+    .alias('i', 'ipfs')
+    .describe('i', 'Use IPFS')
     .boolean('v')
     .alias('v', 'verbose')
     .describe('v', 'Verbose Output')
@@ -39,10 +42,26 @@ function buildSuite(directory) {
     let suite = [];
     let files = fs.readdirSync(directory)
     files.forEach((file) => {
-        let data = fs.readFileSync(directory+'/'+file)
-        suite = suite.concat(JSON.parse(data.toString()).tests);
+        let data = JSON.parse(fs.readFileSync(directory+'/'+file)).tests;
+        data.forEach((query) =>{
+            let suiteobj = {payload: query.payload};
+            if (query.result){
+                suiteobj.result = query.result;
+            }
+            suite.push(suiteobj);
+        })
     });
     return suite;
+}
+
+function startEth(){
+    const test = new RPCSanityTest(argv._, { verbose: argv.v });
+    const suite = buildSuite(argv.directory);
+    suite.forEach((testCase) => {
+        test.loadTest(testCase);
+    });
+
+    test.executeTests();
 }
 
 function main() {
@@ -55,13 +74,12 @@ function main() {
     argv._.map((x) => {
         console.log(colors.yellow(x))
     });
-    const test = new RPCSanityTest(argv._, { verbose: argv.v });
-    const suite = buildSuite(argv.directory);
-    suite.forEach((testCase) => {
-        test.loadTest(testCase);
-    });
 
-    test.executeTests();
+    if(argv.IPFS){
+        startIPFS();
+    } else {
+        startEth();
+    }
 }
 
 

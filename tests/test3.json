@@ -1,0 +1,9 @@
+{
+    "tests": [
+        {
+            "payload": {
+                "method": "eth_blockNumber"
+            }
+        }
+    ]
+}

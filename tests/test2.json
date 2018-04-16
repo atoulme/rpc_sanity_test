@@ -1,0 +1,15 @@
+{
+    "tests": [
+        {
+            "payload": {
+                "method": "eth_estimateGas",
+                "params": [
+                    {
+                        "to": "0x90C892a89daf937dD4c150120469c4EB146F164c",
+                        "data": "0x60d586f8"
+                    }
+                ]
+            }
+        }
+    ]
+}

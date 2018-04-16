@@ -1,0 +1,23 @@
+{
+    "tests": [
+        {
+            "payload": {
+                "method": "eth_getBalance",
+                "params": [
+                    "0x07cff6218249a2351a174bdc1e5b1632e8e4e673",
+                    "latest"
+                ]
+            },
+            "result": "0x3d1945e2bbfb292"
+        },
+        {
+            "payload": {
+                "method": "eth_getTransactionCount",
+                "params": [
+                    "0x07cff6218249a2351a174bdc1e5b1632e8e4e673",
+                    "latest"
+                ]
+            }
+        }
+    ]
+}
